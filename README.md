@@ -1,5 +1,8 @@
 # Medical Clinic
 
+![](./clinic_diagram.png)
+
+
 > This project includes relational database studies in Microverse.
 
 ## Getting Started
