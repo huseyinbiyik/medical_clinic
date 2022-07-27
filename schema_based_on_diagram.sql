@@ -10,7 +10,8 @@ CREATE TABLE medical_histories (
   admitted_at TIMESTAMP,
   patient_id INTEGER NOT NULL,
   status VARCHAR NOT NULL,
-  CONSTRAINT fkey_patients FOREIGN KEY(patient_id) REFERENCES TO patients(id) PRIMARY KEY(id)
+  CONSTRAINT fkey_patients FOREIGN KEY(patient_id) REFERENCES patients(id),
+  PRIMARY KEY(id)
 );
 
 CREATE TABLE invoices (
@@ -19,7 +20,15 @@ CREATE TABLE invoices (
   generated_at TIMESTAMP,
   payed_at TIMESTAMP,
   medical_history_id INT NOT NULL,
-  CONSTRAINT fkey_medical_history_invoices FOREIGN KEY(medical_history_id) REFERENCES TO medical_histories(id) PRIMARY KEY(id)
+  CONSTRAINT fkey_medical_history_invoices FOREIGN KEY(medical_history_id) REFERENCES  medical_histories(id),
+  PRIMARY KEY(id)
+);
+
+CREATE TABLE treatments (
+  id INT GENERATED ALWAYS AS IDENTITY,
+  type VARCHAR(255) NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  PRIMARY KEY(id)
 );
 
 CREATE TABLE invoice_items (
@@ -29,18 +38,9 @@ CREATE TABLE invoice_items (
   total_price DECIMAL NOT NULL,
   invoice_id INT NOT NULL,
   treatment_id INT NOT NULL,
-  CONSTRAINT fkey_invoice FOREIGN KEY(invoices_id) REFERENCES TO invoices(id);
-
-CONSTRAINT fkey_treatments FOREIGN KEY(treatment_id) REFERENCES TO treatments(id);
-
-PRIMARY KEY(id)
-);
-
-CREATE TABLE treatments (
-  id INT GENERATED ALWAYS AS IDENTITY,
-  type VARCHAR(255) NOT NULL,
-  name VARCHAR(255) NOT NULL,
-  CONSTRAINT fkey_medical_history_treatments FOREIGN KEY(medical_history_id) REFERENCES TO medical_histories(id) PRIMARY KEY(id)
+  CONSTRAINT fkey_invoice FOREIGN KEY(invoice_id) REFERENCES  invoices(id),
+  CONSTRAINT fkey_treatments FOREIGN KEY(treatment_id) REFERENCES  treatments(id),
+  PRIMARY KEY(id)
 );
 
 -- Bridging/joining table
@@ -49,4 +49,4 @@ CREATE TABLE treatment_history (
   treatment_id INT,
   CONSTRAINT fk_medical FOREIGN KEY (medical_id) REFERENCES medical_histories(id),
   CONSTRAINT fk_treatment FOREIGN KEY (treatment_id) REFERENCES treatments(id)
-)
+);
